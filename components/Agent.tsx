@@ -7,9 +7,6 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
-// import { vapi } from "@/lib/vapi.sdk";
-// import { interviewer } from "@/constants";
-// import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -72,10 +69,20 @@ const Agent = ({
 
   const handleGenerateFeedback = async(messages: SavedMessage[]) =>{
     console.log("Generate Feedback here");
-    const {success, id} = {
-        success: true,
-        id: "feedback-id",
-    }
+
+    const res = await fetch("/api/feedback", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    interviewId,
+    userId,
+    transcript: messages,
+  }),
+});
+
+const { success, feedbackId: id } = await res.json();
+
+
     if(success && id){
         router.push(`/interview/${interviewId}/feedback`);
     }else{

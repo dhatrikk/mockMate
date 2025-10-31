@@ -155,39 +155,75 @@ End the conversation on a polite and positive note.
   },
 };
 
+
 export const feedbackSchema = z.object({
   totalScore: z.number(),
-  categoryScores: z.tuple([
-    z.object({
-      name: z.literal("Communication Skills"),
+
+  // Convert tuple → object with named fields
+  categoryScores: z.object({
+    communicationSkills: z.object({
       score: z.number(),
       comment: z.string(),
     }),
-    z.object({
-      name: z.literal("Technical Knowledge"),
+    technicalKnowledge: z.object({
       score: z.number(),
       comment: z.string(),
     }),
-    z.object({
-      name: z.literal("Problem Solving"),
+    problemSolving: z.object({
       score: z.number(),
       comment: z.string(),
     }),
-    z.object({
-      name: z.literal("Cultural Fit"),
+    culturalFit: z.object({
       score: z.number(),
       comment: z.string(),
     }),
-    z.object({
-      name: z.literal("Confidence and Clarity"),
+    confidenceAndClarity: z.object({
       score: z.number(),
       comment: z.string(),
     }),
-  ]),
-  strengths: z.array(z.string()),
-  areasForImprovement: z.array(z.string()),
+  }),
+
+  // Convert arrays → plain strings (Gemini can output comma-separated lists)
+  strengths: z.string().describe("Comma-separated list of strengths"),
+  areasForImprovement: z.string().describe("Comma-separated list of improvement areas"),
+
   finalAssessment: z.string(),
 });
+
+
+// export const feedbackSchema = z.object({
+//   totalScore: z.number(),
+//   categoryScores: z.tuple([
+//     z.object({
+//       name: z.literal("Communication Skills"),
+//       score: z.number(),
+//       comment: z.string(),
+//     }),
+//     z.object({
+//       name: z.literal("Technical Knowledge"),
+//       score: z.number(),
+//       comment: z.string(),
+//     }),
+//     z.object({
+//       name: z.literal("Problem Solving"),
+//       score: z.number(),
+//       comment: z.string(),
+//     }),
+//     z.object({
+//       name: z.literal("Cultural Fit"),
+//       score: z.number(),
+//       comment: z.string(),
+//     }),
+//     z.object({
+//       name: z.literal("Confidence and Clarity"),
+//       score: z.number(),
+//       comment: z.string(),
+//     }),
+//   ]),
+//   strengths: z.array(z.string()),
+//   areasForImprovement: z.array(z.string()),
+//   finalAssessment: z.string(),
+// });
 
 export const interviewCovers = [
   "/adobe.png",
